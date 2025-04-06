@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Đọc Truyện</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Web Truyện</a>
+            <div class="d-flex">
+                <button id="loginBtn" class="btn btn-light me-2">Đăng nhập</button>
+                <button id="logoutBtn" class="btn btn-outline-light d-none">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Thể loại</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="genreList" class="list-group">
+                            <!-- Danh sách thể loại sẽ được thêm bằng JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row" id="storiesContainer">
+                    <!-- Danh sách truyện sẽ được thêm bằng JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal chi tiết truyện -->
+    <div class="modal fade" id="storyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="storyModalTitle">Tiêu đề truyện</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img id="storyModalImage" src="" class="img-fluid rounded" alt="Ảnh truyện">
+                            <p class="mt-2"><strong>Tác giả:</strong> <span id="storyModalAuthor"></span></p>
+                            <p><strong>Thể loại:</strong> <span id="storyModalGenre"></span></p>
+                            <p><strong>Lượt xem:</strong> <span id="storyModalViews"></span></p>
+                        </div>
+                        <div class="col-md-8">
+                            <h5>Danh sách chương</h5>
+                            <div id="chaptersList" class="list-group mt-2">
+                                <!-- Danh sách chương sẽ được thêm bằng JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal nội dung chương -->
+    <div class="modal fade" id="chapterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chapterModalTitle">Tiêu đề chương</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="chapterContent" class="chapter-content">
+                        <!-- Nội dung chương sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

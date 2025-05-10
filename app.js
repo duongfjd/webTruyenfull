@@ -1,4 +1,4 @@
-// Khởi tạo Firebase
+// Khởi tạo Firebasem
 const firebaseConfig = {
     apiKey: "AIzaSyAmNTV2Gn_1ja4XyYeUOTjukktzjKcbRAI",
     authDomain: "apptruyen-670b1.firebaseapp.com",

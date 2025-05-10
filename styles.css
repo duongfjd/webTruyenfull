@@ -376,3 +376,190 @@ body {
     font-size: 0.9rem;
     opacity: 0.9;
 }
+
+/* Reading modal styles */
+#readStoryModal .modal-content {
+    background-color: #f8f9fa;
+}
+
+#readStoryModal .modal-header {
+    padding: 1rem;
+    border-bottom: none;
+}
+
+#readStoryModal .modal-body {
+    overflow-y: auto;
+    height: calc(100vh - 130px);
+}
+
+#readStoryModal .modal-footer {
+    padding: 1rem;
+    border-top: none;
+}
+
+/* Chapter content styles */
+.chapter-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 2rem;
+}
+
+.chapter-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #212529;
+    white-space: pre-wrap;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Theme styles */
+.theme-dark {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+.theme-dark .chapter-content {
+    color: #e0e0e0;
+}
+
+.theme-dark .card {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+/* Font size controls */
+.font-size-sm {
+    font-size: 0.9rem;
+}
+
+.font-size-md {
+    font-size: 1.1rem;
+}
+
+.font-size-lg {
+    font-size: 1.3rem;
+}
+
+.font-size-xl {
+    font-size: 1.5rem;
+}
+
+/* Chapter navigation */
+#prevChapterBtn, #nextChapterBtn {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+#prevChapterBtn:hover, #nextChapterBtn:hover {
+    transform: scale(1.1);
+}
+
+#prevChapterBtn:disabled, #nextChapterBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Chapter select */
+#chapterSelect {
+    min-width: 150px;
+}
+
+/* Reading progress */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(45deg, #0d6efd, #0a58ca);
+    z-index: 9999;
+    transition: width 0.3s ease;
+}
+
+/* Print styles */
+@media print {
+    .modal-header,
+    .modal-footer,
+    .btn-group,
+    #chapterSelect {
+        display: none !important;
+    }
+
+    .modal-body {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .chapter-content {
+        font-size: 12pt !important;
+        line-height: 1.5 !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #readStoryModal .modal-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #readStoryModal .modal-header > div {
+        margin-bottom: 1rem;
+    }
+
+    .chapter-title {
+        font-size: 1.3rem;
+    }
+
+    .chapter-content {
+        font-size: 1rem;
+    }
+}
+
+/* Animation for chapter transition */
+.chapter-transition {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar for reading area */
+#readStoryModal .modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#readStoryModal .modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#readStoryModal .modal-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#readStoryModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Theme dark scrollbar */
+.theme-dark #readStoryModal .modal-body::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+.theme-dark #readStoryModal .modal-body::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+.theme-dark #readStoryModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}

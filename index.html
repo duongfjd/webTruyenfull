@@ -6,27 +6,48 @@
     <title>Admin Quản Lý Truyện</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Admin Truyện</a>
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-book me-2"></i>
+                <span>Admin Truyện</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" id="navStories"><i class="bi bi-book"></i> Truyện</a>
+                        <a class="nav-link active d-flex align-items-center" href="#" id="navStories">
+                            <i class="bi bi-book me-1"></i> Truyện
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="navUsers"><i class="bi bi-people"></i> Người dùng</a>
+                        <a class="nav-link d-flex align-items-center" href="#" id="navUsers">
+                            <i class="bi bi-people me-1"></i> Người dùng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#" id="navStats">
+                            <i class="bi bi-graph-up me-1"></i> Thống kê
+                        </a>
                     </li>
                 </ul>
-                <div class="d-flex">
-                    <button id="loginBtn" class="btn btn-light me-2"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</button>
-                    <button id="logoutBtn" class="btn btn-outline-light d-none"><i class="bi bi-box-arrow-left"></i> Đăng xuất</button>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <span class="text-light" id="userInfo"></span>
+                    </div>
+                    <button id="loginBtn" class="btn btn-light me-2 d-flex align-items-center">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập
+                    </button>
+                    <button id="logoutBtn" class="btn btn-outline-light d-none d-flex align-items-center">
+                        <i class="bi bi-box-arrow-left me-1"></i> Đăng xuất
+                    </button>
                 </div>
             </div>
         </div>
@@ -36,23 +57,63 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h5><i class="bi bi-funnel"></i> Lọc</h5>
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-funnel me-2"></i> Lọc & Sắp xếp</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
+                            </div>
                         </div>
-                        <div id="genreList" class="list-group">
-                            <!-- Danh sách thể loại sẽ được thêm bằng JS -->
+                        <div class="mb-3">
+                            <label class="form-label">Sắp xếp theo</label>
+                            <select class="form-select" id="sortSelect">
+                                <option value="title">Tiêu đề A-Z</option>
+                                <option value="views">Lượt xem (cao-thấp)</option>
+                                <option value="date">Ngày thêm mới</option>
+                                <option value="chapters">Số chương</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thể loại</label>
+                            <div id="genreList" class="list-group">
+                                <!-- Danh sách thể loại sẽ được thêm bằng JS -->
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="statusCompleted">
+                                <label class="form-check-label" for="statusCompleted">Hoàn thành</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="statusOngoing">
+                                <label class="form-check-label" for="statusOngoing">Đang tiến hành</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-10">
-                <!-- Phần nội dung chính -->
-                <div id="mainContent">
-                    <!-- Nội dung sẽ thay đổi tùy theo tab được chọn -->
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Danh sách truyện</h5>
+                        <div>
+                            <button class="btn btn-outline-primary me-2" id="exportBtn">
+                                <i class="bi bi-download me-1"></i> Xuất Excel
+                            </button>
+                            <button class="btn btn-primary d-flex align-items-center" id="addStoryBtn">
+                                <i class="bi bi-plus-lg me-1"></i> Thêm truyện mới
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="mainContent">
+                            <!-- Nội dung sẽ thay đổi tùy theo tab được chọn -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,7 +125,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="storyModalTitle">Thêm truyện mới</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="storyForm">
@@ -85,26 +146,47 @@
                                         <!-- Options sẽ được thêm bằng JS -->
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="storyStatus" class="form-label">Trạng thái</label>
+                                    <select class="form-select" id="storyStatus" required>
+                                        <option value="ongoing">Đang tiến hành</option>
+                                        <option value="completed">Hoàn thành</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="storyImage" class="form-label">Ảnh bìa (URL)</label>
-                                    <input type="url" class="form-control" id="storyImage">
+                                    <div class="input-group">
+                                        <input type="url" class="form-control" id="storyImage">
+                                        <button class="btn btn-outline-secondary" type="button" id="previewImageBtn">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="storyViews" class="form-label">Lượt xem</label>
                                     <input type="number" class="form-control" id="storyViews" value="0">
                                 </div>
                                 <div class="mb-3">
-                                    <img id="storyImagePreview" src="https://via.placeholder.com/300x200" class="img-fluid rounded" style="max-height: 150px;">
+                                    <label for="storyDescription" class="form-label">Mô tả</label>
+                                    <textarea class="form-control" id="storyDescription" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="card">
+                                        <img id="storyImagePreview" src="https://via.placeholder.com/300x200" class="card-img-top" alt="Ảnh bìa">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="saveStoryBtn">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveStoryBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                        Lưu
+                    </button>
                 </div>
             </div>
         </div>
@@ -116,12 +198,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Quản lý chương: <span id="chaptersStoryTitle"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <button class="btn btn-success btn-sm" id="addChapterBtn"><i class="bi bi-plus"></i> Thêm chương</button>
-                        <div class="text-muted">Tổng số chương: <span id="totalChapters">0</span></div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <button class="btn btn-success btn-sm d-flex align-items-center me-2" id="addChapterBtn">
+                                <i class="bi bi-plus-lg me-1"></i> Thêm chương
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm d-flex align-items-center" id="importChaptersBtn">
+                                <i class="bi bi-upload me-1"></i> Import
+                            </button>
+                        </div>
+                        <div class="text-muted">Tổng số chương: <span id="totalChapters" class="badge bg-primary">0</span></div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -130,6 +219,7 @@
                                     <th>STT</th>
                                     <th>Tiêu đề</th>
                                     <th>Lượt xem</th>
+                                    <th>Ngày đăng</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -149,7 +239,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="chapterModalTitle">Thêm chương mới</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="chapterForm">
@@ -159,19 +249,36 @@
                             <label for="chapterTitle" class="form-label">Tiêu đề chương</label>
                             <input type="text" class="form-control" id="chapterTitle" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="chapterViews" class="form-label">Lượt xem</label>
-                            <input type="number" class="form-control" id="chapterViews" value="0">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="chapterViews" class="form-label">Lượt xem</label>
+                                <input type="number" class="form-control" id="chapterViews" value="0">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="chapterDate" class="form-label">Ngày đăng</label>
+                                <input type="datetime-local" class="form-control" id="chapterDate">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="chapterContent" class="form-label">Nội dung</label>
+                            <div class="d-flex justify-content-end mb-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="formatContentBtn">
+                                    <i class="bi bi-type me-1"></i> Format
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="pasteContentBtn">
+                                    <i class="bi bi-clipboard me-1"></i> Paste
+                                </button>
+                            </div>
                             <textarea class="form-control" id="chapterContent" rows="15" required></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="saveChapterBtn">Lưu</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveChapterBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                        Lưu
+                    </button>
                 </div>
             </div>
         </div>
@@ -183,23 +290,40 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p id="deleteMessage">Bạn có chắc chắn muốn xóa?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                        Xóa
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none">
+        <div class="position-absolute top-50 start-50 translate-middle text-white text-center">
+            <div class="loading-spinner mb-3"></div>
+            <div>Đang xử lý...</div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="app.js"></script>
 </body>
+</html>
 </html>

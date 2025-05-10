@@ -10,10 +10,46 @@ const firebaseConfig = {
     measurementId: "G-GKRH6H98MR"
 };
 
-// Khởi tạo Firebase
-firebase.initializeApp(firebaseConfig);
+// Kiểm tra kết nối Firebase
+try {
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    console.log('Firebase đã được khởi tạo thành công');
+} catch (error) {
+    console.error('Lỗi khởi tạo Firebase:', error);
+    alert('Không thể kết nối đến Firebase. Vui lòng kiểm tra lại cấu hình.');
+}
+
+// Khởi tạo các service
 const database = firebase.database();
 const auth = firebase.auth();
+
+// Kiểm tra kết nối database
+database.ref('.info/connected').on('value', (snap) => {
+    if (snap.val() === true) {
+        console.log('Đã kết nối đến Realtime Database');
+    } else {
+        console.log('Mất kết nối đến Realtime Database');
+    }
+});
+
+// Xử lý lỗi database
+database.ref().on('error', (error) => {
+    console.error('Lỗi database:', error);
+    alert('Có lỗi xảy ra khi kết nối database: ' + error.message);
+});
+
+// Xử lý lỗi authentication
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        console.log('Người dùng đã đăng nhập:', user.email);
+    } else {
+        console.log('Chưa có người dùng đăng nhập');
+    }
+}, (error) => {
+    console.error('Lỗi authentication:', error);
+    alert('Có lỗi xảy ra khi xác thực: ' + error.message);
+});
 
 // Tham chiếu đến các node trong Realtime Database
 const storiesRef = database.ref('stories');
